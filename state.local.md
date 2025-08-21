@@ -4,15 +4,16 @@
 2025-08-20 14:30
 
 ## Features Implementadas
-- [ ] Setup inicial do projeto Xcode
-- [ ] Estrutura de documentação completa
-- [ ] ADRs de decisões arquiteturais
-- [ ] PRPs para funcionalidades principais
+- [X] Setup inicial do projeto Xcode
+- [X] Estrutura de documentação completa
+- [X] ADRs de decisões arquiteturais
+- [X] PRPs para funcionalidades principais
 
 ## Em Desenvolvimento
-- [ ] SpeechRecognitionService
-- [ ] Core data models
-- [ ] UI básica para gravação
+- [X] SpeechRecognitionService
+- [X] Core data models
+- [X] UI básica para gravação
+- [] TextSumarizartion
 
 ## Próximos Passos
 1. Implementar SpeechRecognitionService base
@@ -28,8 +29,8 @@
 - Apple Intelligence deve estar habilitado
 
 ## Decisões Pendentes
-- [ ] Definir duração máxima de gravação (sugestão: 60s)
-- [ ] Escolher idiomas suportados (PT-BR, EN-US)
+- [X] Definir duração máxima de gravação (sugestão: 60s)
+- [X] Escolher idiomas suportados (PT-BR, EN-US)
 - [ ] Definir formato de output da sumarização
 
 ## Context para IA
