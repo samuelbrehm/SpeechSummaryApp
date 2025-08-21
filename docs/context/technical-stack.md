@@ -22,15 +22,17 @@ Data Layer (Models + Repositories)
 - **SwiftUI**: Interface do usuário moderna e declarativa
 - **Combine**: Reactive programming e data binding
 - **Speech**: Reconhecimento de fala nativo
-- **FoundationModels**: Sumarização on-device
+- **CoreML**: Text summarization com modelos locais
 - **AVFoundation**: Controle de sessão de áudio
-- **CoreML**: Suporte adicional para ML (se necessário)
+- **Natural Language**: Text preprocessing e análise
 
 ### Desenvolvimento
 - **Swift 5.10+**: Linguagem principal
-- **Xcode 16 beta**: IDE de desenvolvimento
+- **Xcode 15+**: IDE de desenvolvimento (Core ML support)
 - **SwiftLint**: Linting e code style
 - **SwiftFormat**: Formatação automática
+- **Core ML Tools**: Model conversion e otimização
+- **Python 3.8+**: Environment para model conversion
 
 ## Arquitetura de Features
 
@@ -57,7 +59,9 @@ SummarizationUseCase (Business Logic)
     ↓
 SummarizationService (Framework Wrapper)
     ↓
-FoundationModels (Apple)
+CoreML Model (DistilBART/T5)
+    ↓
+Apple Neural Engine/CPU
 ```
 
 ## Padrões de Design
@@ -79,6 +83,10 @@ enum AppError: LocalizedError {
     case speechUnavailable
     case permissionDenied
     case processingFailed(Error)
+    case modelNotLoaded
+    case textTooLong
+    case summarizationFailed(Error)
+    case insufficientMemory
 }
 
 // Result types para operações que podem falhar
@@ -111,8 +119,29 @@ struct TranscriptionResult {
 struct SummaryResult {
     let originalText: String
     let summary: String
-    let keyPoints: [String]
+    let processingTime: TimeInterval
+    let confidence: Float?
     let processedAt: Date
+}
+
+struct SummarizationInput {
+    let text: String
+    let maxLength: SummaryLength
+    let language: String?
+}
+
+enum SummaryLength: String, CaseIterable {
+    case short = "short"
+    case medium = "medium" 
+    case long = "long"
+    
+    var tokenCount: Int {
+        switch self {
+        case .short: return 50
+        case .medium: return 100
+        case .long: return 200
+        }
+    }
 }
 ```
 
@@ -156,12 +185,24 @@ Task {
 @Published var isRecording: Bool = false
 @Published var transcribedText: String = ""
 @Published var summaryResult: SummaryResult?
+@Published var isModelLoaded: Bool = false
+@Published var isSummarizing: Bool = false
 
 // Reactive chains
 $transcribedText
     .debounce(for: .milliseconds(500), scheduler: DispatchQueue.main)
+    .filter { !$0.isEmpty }
     .sink { [weak self] text in
         self?.processForSummary(text)
+    }
+
+// Model loading state
+$isModelLoaded
+    .combineLatest($transcribedText)
+    .sink { [weak self] isLoaded, text in
+        if isLoaded && !text.isEmpty {
+            self?.enableSummarization()
+        }
     }
 ```
 
@@ -171,6 +212,9 @@ $transcribedText
 - Weak references em closures
 - Lazy initialization para componentes pesados
 - Proper cleanup em deinit
+- Core ML model caching e unloading strategies
+- Memory monitoring durante summarization
+- Background memory cleanup para models não utilizados
 
 ### UI Performance
 - @State para dados locais
@@ -182,20 +226,30 @@ $transcribedText
 
 ### Testing Strategy
 ```
-Unit Tests (80% coverage)
+Unit Tests (90% coverage)
 ├── ViewModels
 ├── UseCases  
-├── Services
-└── Models
+├── Services (including SummarizationService)
+├── Models
+└── Core ML Model Wrappers
 
 Integration Tests
 ├── Service + Framework
-└── UseCase + Service
+├── UseCase + Service
+├── Core ML Model Integration
+└── Speech-to-Summary Pipeline
+
+Performance Tests
+├── Model loading benchmarks
+├── Memory usage monitoring
+├── Inference time measurements
+└── Device compatibility validation
 
 Manual Tests
 ├── Device permissions
 ├── Background behavior
-└── Error scenarios
+├── Error scenarios
+└── Model performance on various devices
 ```
 
 ### Debug Tools
