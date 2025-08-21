@@ -64,7 +64,7 @@ Este app serve como:
 
 ### Dispositivo
 - iPhone com Apple Intelligence
-- iOS 18.0+ para FoundationModels
+- iOS 26.0+ para FoundationModels
 - Processamento on-device capability
 - Microfone funcional
 

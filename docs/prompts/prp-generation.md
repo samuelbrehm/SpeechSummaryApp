@@ -9,7 +9,7 @@ CONTEXTO DO PROJETO:
 - App demonstrativo iOS de workflows de IA
 - Arquitetura: MVVM + Combine + SwiftUI  
 - Stack: Speech Framework + FoundationModels
-- Target: iOS 18+, dispositivos com Apple Intelligence
+- Target: iOS 26+, dispositivos com Apple Intelligence
 - Objetivo: Demonstrar PRPs e Context Engineering
 
 ESTRUTURA DO PRP:
@@ -117,7 +117,7 @@ Implemente seguindo patterns estabelecidos e guidelines do projeto.
 Crie um PRP completo para implementar Text Summarization usando FoundationModels.
 
 ESPECIFICAÇÕES TÉCNICAS:
-- Use FoundationModels framework (iOS 18+)
+- Use FoundationModels framework (iOS 26+)
 - Structured output com @Generable
 - Streaming responses com AsyncStream
 - On-device processing exclusivamente

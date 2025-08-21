@@ -12,7 +12,7 @@ Necessitamos de um sistema de sumarização de texto para processar o output do 
 ## Opções Consideradas
 
 ### 1. FoundationModels (Apple)
-- Framework nativo iOS 18+
+- Framework nativo iOS 26+
 - Processamento completamente on-device
 - Modelos otimizados para Apple Silicon
 - Integração com Apple Intelligence
@@ -69,7 +69,7 @@ Necessitamos de um sistema de sumarização de texto para processar o output do 
 - Demonstra tecnologia state-of-the-art
 
 ### Negativas
-- Requer iOS 18+ e Apple Intelligence habilitado
+- Requer iOS 26+ e Apple Intelligence habilitado
 - Limitado a dispositivos com Neural Engine
 - Menor controle sobre prompts/behavior
 - Qualidade dependente dos modelos Apple
@@ -146,7 +146,7 @@ struct SummaryResult {
 ```
 
 ### Capabilities
-- Apple Intelligence (automático em iOS 18+)
+- Apple Intelligence (automático em iOS 26+)
 - Nenhuma capability adicional necessária
 
 ### Error Handling
@@ -161,7 +161,7 @@ enum SummarizationError: LocalizedError {
         case .modelUnavailable:
             return "Apple Intelligence não está disponível neste dispositivo"
         case .deviceNotSupported:
-            return "Este recurso requer iOS 18+ com Apple Intelligence"
+            return "Este recurso requer iOS 26+ com Apple Intelligence"
         case .processingFailed(let error):
             return "Erro ao processar texto: \(error.localizedDescription)"
         }

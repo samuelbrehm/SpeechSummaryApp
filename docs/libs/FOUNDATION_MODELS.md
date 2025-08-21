@@ -1,7 +1,7 @@
 # FoundationModels Framework - Documentação de Referência
 
 ## Overview
-O FoundationModels framework (iOS 18+) expõe os modelos de linguagem on-device que alimentam a Apple Intelligence, fornecendo capacidades avançadas de compreensão e geração de linguagem.
+O FoundationModels framework 26+) expõe os modelos de linguagem on-device que alimentam a Apple Intelligence, fornecendo capacidades avançadas de compreensão e geração de linguagem.
 
 ## Core Components
 
@@ -182,7 +182,7 @@ enum FoundationModelsError: LocalizedError {
         case .modelUnavailable:
             return "Apple Intelligence não está disponível"
         case .deviceNotSupported:
-            return "Requer iOS 18+ com Apple Intelligence"
+            return "Requer iOS 26+ com Apple Intelligence"
         case .processingFailed(let error):
             return "Erro de processamento: \(error.localizedDescription)"
         case .streamingInterrupted:
@@ -256,7 +256,7 @@ let result = try await session.respond(
 ## Limitations e Considerações
 
 ### Device Requirements
-- **iOS 18+**: Framework availability
+- **iOS 26+**: Framework availability
 - **Apple Intelligence**: Must be enabled
 - **Neural Engine**: Melhor performance
 - **Physical Device**: Não funciona no Simulator

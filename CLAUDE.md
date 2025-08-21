@@ -119,7 +119,7 @@ swiftformat SpeechSummaryApp/ --swiftversion 5.10
 
 ### Device Requirements
 **CRITICAL**: This project requires:
-- Physical iOS device (iOS 18.0+)
+- Physical iOS device (iOS 26.0+)
 - Apple Intelligence enabled
 - Microphone permissions
 - Speech Framework and FoundationModels NOT available in iOS Simulator
@@ -248,13 +248,13 @@ protocol UseCaseProtocol {
 
 ### Apple Frameworks (No External Dependencies)
 - **Speech**: iOS speech recognition (requires device)
-- **FoundationModels**: On-device AI summarization (iOS 18.0+, requires Apple Intelligence)
+- **FoundationModels**: On-device AI summarization (iOS 26.0+, requires Apple Intelligence)
 - **SwiftUI**: Modern declarative UI
 - **Combine**: Reactive programming and data binding
 - **AVFoundation**: Audio session management
 
 ### Development Tools
-- **Xcode 16 beta**: Required for FoundationModels support
+- **Xcode 26 beta**: Required for FoundationModels support
 - **SwiftLint**: Code style enforcement
 - **SwiftFormat**: Automatic code formatting
 
@@ -291,7 +291,7 @@ This project has extensive documentation for AI-assisted development:
 ## Important Constraints
 
 - **No Simulator Support**: Speech and FoundationModels require physical device
-- **iOS 18.0+ Required**: FoundationModels dependency
+- **iOS 26.0+ Required**: FoundationModels dependency
 - **Apple Intelligence Required**: Must be enabled on device
 - **On-Device Only**: No network calls, complete privacy by design
 - **Demo Focus**: Prioritize clarity and educational value over production complexity

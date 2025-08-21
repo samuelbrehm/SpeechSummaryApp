@@ -353,7 +353,7 @@ enum SummarizationError: LocalizedError {
         case .modelUnavailable:
             return "FoundationModels não está disponível. Verifique se Apple Intelligence está habilitado."
         case .deviceNotSupported:
-            return "Este recurso requer iOS 18+ com Apple Intelligence ativado."
+            return "Este recurso requer iOS 26+ com Apple Intelligence ativado."
         case .textTooShort(let minimum):
             return "Texto muito curto para sumarização. Mínimo: \(minimum) caracteres."
         case .textTooLong(let maximum):
