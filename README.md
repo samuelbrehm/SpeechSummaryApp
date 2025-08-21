@@ -12,8 +12,8 @@ Um aplicativo iOS demonstrativo que utiliza workflows de IA para desenvolvimento
 
 ## Requisitos
 
-- Xcode 16 beta ou superior
-- iOS 18.0+ (para FoundationModels)
+- Xcode 26 beta ou superior
+- iOS 26.0+ (para FoundationModels)
 - Dispositivo físico com Apple Intelligence habilitado
 - macOS Sequoia para desenvolvimento
 
