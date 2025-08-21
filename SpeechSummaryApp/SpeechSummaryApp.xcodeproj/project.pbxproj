@@ -115,7 +115,6 @@
 				7E9F508A2E56B769000FF261 /* Sources */,
 				7E9F508B2E56B769000FF261 /* Frameworks */,
 				7E9F508C2E56B769000FF261 /* Resources */,
-				7E9F50BA2E56BD09000FF261 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -244,26 +243,6 @@
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXResourcesBuildPhase section */
-
-/* Begin PBXShellScriptBuildPhase section */
-		7E9F50BA2E56BD09000FF261 /* ShellScript */ = {
-			isa = PBXShellScriptBuildPhase;
-			buildActionMask = 2147483647;
-			files = (
-			);
-			inputFileListPaths = (
-			);
-			inputPaths = (
-			);
-			outputFileListPaths = (
-			);
-			outputPaths = (
-			);
-			runOnlyForDeploymentPostprocessing = 0;
-			shellPath = /bin/sh;
-			shellScript = "# Type a script or drag a script file from your workspace to insert its path.\nswiftformat .\n";
-		};
-/* End PBXShellScriptBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
 		7E9F508A2E56B769000FF261 /* Sources */ = {
