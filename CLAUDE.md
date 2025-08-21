@@ -1,4 +1,8 @@
-# SpeechSummaryApp - Guidelines para IA
+# CLAUDE.md
+
+This file provides guidance to Claude Code (claude.ai/code) when working with code in this repository.
+
+# SpeechSummaryApp - AI Development Guidelines
 
 ## Princípios Fundamentais
 
@@ -17,23 +21,38 @@
 
 ## Estrutura de Código
 
-### Organização
+### Target Code Organization (To Be Implemented)
 ```
-Core/
-├── Services/     # SpeechService, SummarizationService
-├── UseCases/     # SpeechRecognitionUseCase, SummarizationUseCase  
-└── Data/         # Models, Repositories
+SpeechSummaryApp/SpeechSummaryApp/
+├── Core/
+│   ├── Services/     # SpeechService, SummarizationService
+│   ├── UseCases/     # SpeechRecognitionUseCase, SummarizationUseCase  
+│   └── Data/         # Models, Repositories, Protocols
+├── Features/
+│   ├── SpeechRecognition/
+│   │   ├── Views/
+│   │   ├── ViewModels/
+│   │   └── Models/
+│   └── TextSummarization/
+│       ├── Views/
+│       ├── ViewModels/
+│       └── Models/
+├── Shared/
+│   ├── Extensions/
+│   ├── Components/   # Reusable SwiftUI components
+│   └── Utils/
+└── Resources/
+    └── Assets.xcassets/
 
-Features/
-├── SpeechRecognition/
-│   ├── Views/
-│   ├── ViewModels/
-│   └── Models/
-└── TextSummarization/
-    ├── Views/
-    ├── ViewModels/
-    └── Models/
+**NOTE**: Currently the project only contains basic SwiftUI template files.
 ```
+
+### Implementation Priority
+1. **Core Services Layer** - SpeechService, SummarizationService
+2. **Domain Models** - TranscriptionResult, SummaryResult, AppError
+3. **Use Cases** - Business logic isolation
+4. **ViewModels** - @MainActor presentation logic
+5. **SwiftUI Views** - Modern UI with liquid glass effects
 
 ### Regras de Código
 - **Máximo 200 linhas por arquivo**
@@ -77,21 +96,70 @@ Features/
 - **Progress**: Circular progress para operations
 - **Animations**: Spring animations para transições
 
-## Comandos de Desenvolvimento
+## Development Commands
 
+### Building and Testing
 ```bash
-# Build do projeto
-xcodebuild -scheme SpeechSummaryApp -destination 'platform=iOS Simulator,name=iPhone 15 Pro' build
+# Open project in Xcode (primary development method)
+open SpeechSummaryApp/SpeechSummaryApp.xcodeproj
 
-# Executar testes
-xcodebuild -scheme SpeechSummaryApp -destination 'platform=iOS Simulator,name=iPhone 15 Pro' test
+# Build from command line (if needed)
+cd SpeechSummaryApp && xcodebuild -scheme SpeechSummaryApp build
 
-# Linting
-swiftlint --strict
+# Run tests (unit tests only - no UI tests as per project requirements)
+cd SpeechSummaryApp && xcodebuild -scheme SpeechSummaryApp test -destination 'platform=iOS Simulator,name=iPhone 15 Pro'
 
-# Formatação
-swiftformat . --swiftversion 5.10
+# Run specific test target
+cd SpeechSummaryApp && xcodebuild -scheme SpeechSummaryApp test -only-testing:SpeechSummaryAppTests
+
+# Code quality
+swiftlint --config SpeechSummaryApp/.swiftlint.yml
+swiftformat SpeechSummaryApp/ --swiftversion 5.10
 ```
+
+### Device Requirements
+**CRITICAL**: This project requires:
+- Physical iOS device (iOS 18.0+)
+- Apple Intelligence enabled
+- Microphone permissions
+- Speech Framework and FoundationModels NOT available in iOS Simulator
+
+### Working Directory Structure
+```
+SpeechSummaryApp/               # Main Xcode project folder
+├── SpeechSummaryApp.xcodeproj/ # Xcode project file
+└── SpeechSummaryApp/           # Source code
+    ├── SpeechSummaryAppApp.swift
+    ├── ContentView.swift
+    ├── Info.plist
+    └── Assets.xcassets/
+
+docs/                           # Comprehensive documentation
+├── ADRs/                      # Architecture Decision Records
+├── context/                   # Technical context
+├── plans/                     # Development plans
+└── libs/                      # Framework documentation
+
+PRPs/                          # Product Requirements Prompts
+state.local.md                 # Current development state
+```
+
+## Project Context
+
+### Current Status
+This is an **early-stage demonstrative project** showcasing AI workflows in iOS development. The project structure is established, but core features are not yet implemented.
+
+**Key Files to Reference**:
+- `state.local.md` - Current development status and next steps
+- `docs/ADRs/003-architecture-mvvm.md` - Detailed architecture decisions
+- `docs/context/technical-stack.md` - Complete technical overview
+- `docs/plans/action-plan-global.md` - Development roadmap
+
+### Development Philosophy
+- **PRPs (Product Requirements Prompts)**: This project demonstrates PRP-driven development
+- **Context Engineering**: Extensive documentation for AI-assisted development
+- **Privacy First**: All processing happens on-device using Apple's frameworks
+- **Demo Purpose**: Focus on clarity and educational value over production complexity
 
 ## Estrutura de Errors
 
@@ -164,9 +232,66 @@ protocol UseCaseProtocol {
 - **High Contrast**: Testar em modo acessibilidade
 - **Haptic Feedback**: Para feedback tátil
 
+## Code Quality Configuration
+
+### SwiftLint Setup
+- Configuration file: `SpeechSummaryApp/.swiftlint.yml`
+- Disabled rules: `trailing_whitespace`, `line_length`
+- Build script integration: SwiftFormat runs automatically on build
+
+### Build Integration
+- **SwiftFormat**: Configured as Xcode build script (line 264 in project.pbxproj)
+- **Auto-formatting**: Runs on every build to maintain consistency
+- **Swift Version**: 5.10+ with modern concurrency features
+
+## Key Framework Dependencies
+
+### Apple Frameworks (No External Dependencies)
+- **Speech**: iOS speech recognition (requires device)
+- **FoundationModels**: On-device AI summarization (iOS 18.0+, requires Apple Intelligence)
+- **SwiftUI**: Modern declarative UI
+- **Combine**: Reactive programming and data binding
+- **AVFoundation**: Audio session management
+
+### Development Tools
+- **Xcode 16 beta**: Required for FoundationModels support
+- **SwiftLint**: Code style enforcement
+- **SwiftFormat**: Automatic code formatting
+
 ## Release Guidelines
 
 - **Version Bump**: Semantic versioning
-- **TestFlight**: Testes beta obrigatórios
-- **App Store**: Seguir review guidelines
-- **Privacy**: Declarar uso de microfone e IA
+- **TestFlight**: Beta testing required
+- **App Store**: Follow review guidelines
+- **Privacy**: Microphone and AI usage declarations
+- **Device Support**: iPhone/iPad with Apple Intelligence support
+
+## Documentation Navigation
+
+This project has extensive documentation for AI-assisted development:
+
+### Essential Reading
+1. **`state.local.md`** - Always check current development state first
+2. **`docs/ADRs/003-architecture-mvvm.md`** - Comprehensive architecture guide with code examples
+3. **`docs/context/technical-stack.md`** - Complete technical overview and patterns
+4. **`docs/plans/action-plan-global.md`** - Development phases and priorities
+
+### When Starting New Features
+1. Check if there's a PRP in `PRPs/` folder for the feature
+2. Review related ADRs in `docs/ADRs/`
+3. Follow the MVVM pattern established in architecture documentation
+4. Update `state.local.md` when completing tasks
+
+### Development Workflow
+- **Planning**: Use PRPs and action plans in `docs/plans/`
+- **Architecture**: Refer to ADRs for architectural decisions
+- **Implementation**: Follow patterns in `docs/context/technical-stack.md`
+- **Testing**: Unit tests for ViewModels and UseCases only (no UI tests)
+
+## Important Constraints
+
+- **No Simulator Support**: Speech and FoundationModels require physical device
+- **iOS 18.0+ Required**: FoundationModels dependency
+- **Apple Intelligence Required**: Must be enabled on device
+- **On-Device Only**: No network calls, complete privacy by design
+- **Demo Focus**: Prioritize clarity and educational value over production complexity
