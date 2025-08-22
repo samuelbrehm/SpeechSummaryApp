@@ -9,9 +9,11 @@ import SwiftUI
 
 struct SpeechRecognitionView: View {
     @StateObject private var viewModel: SpeechRecognitionViewModel
+    let onNavigateToSummary: () -> Void
     
-    init(viewModel: SpeechRecognitionViewModel) {
+    init(viewModel: SpeechRecognitionViewModel, onNavigateToSummary: @escaping () -> Void = {}) {
         self._viewModel = StateObject(wrappedValue: viewModel)
+        self.onNavigateToSummary = onNavigateToSummary
     }
     
     var body: some View {
@@ -89,7 +91,7 @@ struct SpeechRecognitionView: View {
                 }
                 
                 NavigationButtonView(text: viewModel.transcribedText) {
-                    // TODO: Navigate to summarization
+                    onNavigateToSummary()
                 }
             }
             
