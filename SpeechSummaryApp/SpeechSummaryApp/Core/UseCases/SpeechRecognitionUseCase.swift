@@ -15,6 +15,8 @@ protocol SpeechRecognitionUseCaseProtocol {
     func startSpeechRecognition() async throws
     func stopSpeechRecognition() async
     func getCurrentTranscription() -> String
+    func getAccumulatedText() -> String
+    func clearAccumulatedText()
     
     var isRecording: AnyPublisher<Bool, Never> { get }
     var transcribedText: AnyPublisher<String, Never> { get }
@@ -67,7 +69,15 @@ final class SpeechRecognitionUseCase: SpeechRecognitionUseCaseProtocol {
     }
     
     func getCurrentTranscription() -> String {
-        return ""
+        return speechService.getAccumulatedText()
+    }
+    
+    func getAccumulatedText() -> String {
+        return speechService.getAccumulatedText()
+    }
+    
+    func clearAccumulatedText() {
+        speechService.clearAccumulatedText()
     }
     
     private func requestMicrophonePermission() async -> Bool {

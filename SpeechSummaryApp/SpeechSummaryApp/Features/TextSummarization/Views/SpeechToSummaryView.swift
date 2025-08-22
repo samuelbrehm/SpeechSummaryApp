@@ -64,11 +64,14 @@ struct SpeechToSummaryView: View {
         }
         .onChange(of: speechViewModel.transcribedText) { _, newText in
             if !newText.isEmpty {
-                currentTranscription = TranscriptionResult(
-                    text: newText,
-                    confidence: 0.9, // Default confidence
-                    isFinal: true
-                )
+                let accumulatedText = speechViewModel.getAccumulatedText()
+                if !accumulatedText.isEmpty {
+                    currentTranscription = TranscriptionResult(
+                        text: accumulatedText,
+                        confidence: 0.9, // Default confidence
+                        isFinal: true
+                    )
+                }
             }
         }
     }
@@ -123,6 +126,24 @@ struct SpeechToSummaryView: View {
             SpeechRecognitionView(viewModel: speechViewModel) {
                 if currentTranscription != nil {
                     showingSummaryView = true
+                }
+            }
+            
+            if !speechViewModel.getAccumulatedText().isEmpty {
+                HStack {
+                    Text("Total accumulated text: \(speechViewModel.getAccumulatedText().count) characters")
+                        .font(.caption)
+                        .foregroundStyle(.secondary)
+                    
+                    Spacer()
+                    
+                    Button("Clear All", role: .destructive) {
+                        speechViewModel.clearTranscription()
+                        currentTranscription = nil
+                        summaryViewModel.clearSummary()
+                    }
+                    .buttonStyle(.bordered)
+                    .controlSize(.small)
                 }
             }
         }

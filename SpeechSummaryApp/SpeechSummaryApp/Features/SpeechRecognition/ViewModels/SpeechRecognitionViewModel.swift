@@ -83,9 +83,14 @@ final class SpeechRecognitionViewModel: ObservableObject {
     }
     
     func clearTranscription() {
+        useCase.clearAccumulatedText()
         transcribedText = ""
         state = .ready
         errorMessage = nil
+    }
+    
+    func getAccumulatedText() -> String {
+        return useCase.getAccumulatedText()
     }
     
     func requestPermissions() {

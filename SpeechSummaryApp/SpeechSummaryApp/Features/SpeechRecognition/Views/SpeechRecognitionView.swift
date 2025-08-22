@@ -67,10 +67,25 @@ struct SpeechRecognitionView: View {
                 .fontWeight(.bold)
                 .multilineTextAlignment(.center)
             
-            Text("Toque no botão para começar a transcrever")
-                .font(.subheadline)
-                .foregroundColor(.secondary)
-                .multilineTextAlignment(.center)
+            VStack(spacing: 8) {
+                Text("Toque no botão para começar a transcrever")
+                    .font(.subheadline)
+                    .foregroundColor(.secondary)
+                    .multilineTextAlignment(.center)
+                
+                if !viewModel.getAccumulatedText().isEmpty && !viewModel.isRecording {
+                    HStack {
+                        Image(systemName: "text.badge.plus")
+                            .foregroundColor(.green)
+                        Text("Texto acumulado: \(viewModel.getAccumulatedText().count) caracteres")
+                            .font(.caption)
+                            .foregroundColor(.green)
+                    }
+                    .padding(.horizontal, 12)
+                    .padding(.vertical, 6)
+                    .background(.green.opacity(0.1), in: Capsule())
+                }
+            }
         }
     }
     
@@ -90,7 +105,7 @@ struct SpeechRecognitionView: View {
                     .foregroundColor(.red)
                 }
                 
-                NavigationButtonView(text: viewModel.transcribedText) {
+                NavigationButtonView(text: viewModel.getAccumulatedText()) {
                     onNavigateToSummary()
                 }
             }

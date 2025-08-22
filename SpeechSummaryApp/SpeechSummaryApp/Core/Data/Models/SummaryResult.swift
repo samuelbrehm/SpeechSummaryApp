@@ -46,6 +46,14 @@ enum SummaryLength: CaseIterable {
         case .long: return "Long"
         }
     }
+    
+    var compressionRatio: Double {
+        switch self {
+        case .short: return 0.25  // More aggressive compression
+        case .medium: return 0.40 // Balanced compression
+        case .long: return 0.60   // Less compression, more detail
+        }
+    }
 }
 
 extension SummaryResult: Identifiable {}

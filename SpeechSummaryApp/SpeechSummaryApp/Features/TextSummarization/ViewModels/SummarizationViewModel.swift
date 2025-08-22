@@ -187,6 +187,13 @@ final class SummarizationViewModel: ObservableObject {
         errorMessage = nil
     }
     
+    func clearSummary() {
+        logger.info("Clearing summary results")
+        summaryResult = nil
+        state = isModelLoaded ? .ready : .idle
+        errorMessage = nil
+    }
+    
     func retryLastOperation() async {
         guard let lastResult = summaryResult else {
             logger.warning("No previous operation to retry")

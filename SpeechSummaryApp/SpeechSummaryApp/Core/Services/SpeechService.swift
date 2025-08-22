@@ -19,6 +19,8 @@ protocol SpeechServiceProtocol {
     func requestAuthorization() async -> SFSpeechRecognizerAuthorizationStatus
     func startRecording() async throws
     func stopRecording()
+    func getAccumulatedText() -> String
+    func clearAccumulatedText()
 }
 
 final class SpeechService: NSObject, SpeechServiceProtocol {
@@ -33,6 +35,8 @@ final class SpeechService: NSObject, SpeechServiceProtocol {
     private var recordingTimer: Timer?
     
     private let maxRecordingDuration: TimeInterval = 60.0
+    private var accumulatedTranscriptions: [String] = []
+    private var currentSessionText: String = ""
     
     var authorizationStatus: AnyPublisher<SFSpeechRecognizerAuthorizationStatus, Never> {
         $_authorizationStatus.eraseToAnyPublisher()
@@ -86,7 +90,7 @@ final class SpeechService: NSObject, SpeechServiceProtocol {
         
         DispatchQueue.main.async {
             self._isRecording = true
-            self._transcribedText = ""
+            self.currentSessionText = ""
         }
         
         startRecordingTimer()
@@ -107,6 +111,11 @@ final class SpeechService: NSObject, SpeechServiceProtocol {
         
         DispatchQueue.main.async {
             self._isRecording = false
+            
+            if !self.currentSessionText.trimmingCharacters(in: .whitespacesAndNewlines).isEmpty {
+                self.accumulatedTranscriptions.append(self.currentSessionText)
+                self.updateCombinedText()
+            }
         }
     }
     
@@ -169,14 +178,15 @@ final class SpeechService: NSObject, SpeechServiceProtocol {
                 guard let self = self else { return }
                 
                 if let result = result {
-                    self._transcribedText = result.bestTranscription.formattedString
+                    self.currentSessionText = result.bestTranscription.formattedString
+                    self.updateCombinedText()
                     
-                    if result.isFinal {
-                        self.stopRecording()
-                    }
+                    // Note: Não para automaticamente quando result.isFinal = true
+                    // Isso permite que o usuário continue falando após pausas
+                    // O stop só acontece por ação manual ou timeout
                 }
                 
-                if let error = error {
+                if error != nil {
                     self.stopRecording()
                 }
             }
@@ -186,6 +196,27 @@ final class SpeechService: NSObject, SpeechServiceProtocol {
     private func startRecordingTimer() {
         recordingTimer = Timer.scheduledTimer(withTimeInterval: maxRecordingDuration, repeats: false) { [weak self] _ in
             self?.stopRecording()
+        }
+    }
+    
+    func getAccumulatedText() -> String {
+        return accumulatedTranscriptions.joined(separator: " ")
+    }
+    
+    func clearAccumulatedText() {
+        accumulatedTranscriptions.removeAll()
+        currentSessionText = ""
+        _transcribedText = ""
+    }
+    
+    private func updateCombinedText() {
+        let previousText = accumulatedTranscriptions.joined(separator: " ")
+        let currentText = currentSessionText
+        
+        if previousText.isEmpty {
+            _transcribedText = currentText
+        } else {
+            _transcribedText = "\(previousText) \(currentText)".trimmingCharacters(in: .whitespacesAndNewlines)
         }
     }
 }
