@@ -4,5 +4,9 @@
 <dict>
 	<key>NSAppleAINaturalLanguageDescription</key>
 	<string>Este app usa Apple Intelligence para sumarizar texto</string>
+	<key>NSMicrophoneUsageDescription</key>
+	<string>Este app precisa de acesso ao microfone para capturar sua voz e converter em texto.</string>
+	<key>NSSpeechRecognitionUsageDescription</key>
+	<string>Este app usa reconhecimento de fala para transcrever suas palavras em tempo real.</string>
 </dict>
 </plist>

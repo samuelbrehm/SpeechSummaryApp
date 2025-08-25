@@ -9,7 +9,13 @@ import SwiftUI
 
 struct ContentView: View {
     var body: some View {
-        HelloWorldView()
+        SpeechRecognitionView(
+            viewModel: SpeechRecognitionViewModel(
+                useCase: SpeechRecognitionUseCase(
+                    speechService: SpeechService()
+                )
+            )
+        )
     }
 }
 
